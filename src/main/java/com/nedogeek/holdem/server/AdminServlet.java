@@ -2,10 +2,15 @@ package com.nedogeek.holdem.server;
 
 import com.nedogeek.holdem.GameSettings;
 import com.nedogeek.holdem.bot.CallBot;
-import com.nedogeek.holdem.bot.RandomBot;
+import com.nedogeek.holdem.bot.RiseBot;
 import com.nedogeek.holdem.dealer.Dealer;
 import com.nedogeek.holdem.gamingStuff.Player;
 import com.nedogeek.holdem.gamingStuff.PlayersList;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,10 +18,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * User: Konstantin Demishev
@@ -51,8 +52,12 @@ public class AdminServlet extends HttpServlet {
 
         dealer = new Dealer(players);
 
-        players.add(new RandomBot(dealer));
-        players.add(new CallBot(dealer));
+        players.add(new CallBot("1", dealer));
+        players.add(new RiseBot("2", dealer));
+//        players.add(new FoldBot("3", dealer));
+//        players.add(new CallBot("4", dealer));
+//        players.add(new RiseBot("5", dealer));
+//        players.add(new FoldBot("6", dealer));
     }
 
     @Override
