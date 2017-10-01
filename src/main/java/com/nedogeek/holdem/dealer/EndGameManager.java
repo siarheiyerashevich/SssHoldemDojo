@@ -10,11 +10,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * User: Konstantin Demishev
- * Date: 22.11.12
- * Time: 1:35
+ * User: Konstantin Demishev Date: 22.11.12 Time: 1:35
  */
 class EndGameManager {
+
     private final Dealer dealer;
     private final PlayersList playersList;
     private final EventManager eventManager;
@@ -70,7 +69,9 @@ class EndGameManager {
     private void checkZeroBalance() {
         for (Player player : playersList) {
             if (player.getBalance() == 0) {
-                player.setBalance(GameSettings.getCoinsAtStart());
+                //player.setBalance(GameSettings.getCoinsAtStart());
+                playersList.kickPlayer(player.getName());
+                System.out.println("Removed: " + player.getName());
             }
         }
     }
@@ -91,7 +92,7 @@ class EndGameManager {
     private int getChipsFromPlayer(Player player, int chipsCount) {
         int playerBet = player.getBet();
         int chipsFromPlayer = (playerBet < chipsCount) ?
-                playerBet : chipsCount;
+                              playerBet : chipsCount;
 
         player.setBet(playerBet -= chipsFromPlayer);
 

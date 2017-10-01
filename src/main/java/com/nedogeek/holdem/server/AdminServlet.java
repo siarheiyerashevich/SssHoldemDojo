@@ -2,6 +2,7 @@ package com.nedogeek.holdem.server;
 
 import com.nedogeek.holdem.GameSettings;
 import com.nedogeek.holdem.bot.CallBot;
+import com.nedogeek.holdem.bot.FoldBot;
 import com.nedogeek.holdem.bot.RiseBot;
 import com.nedogeek.holdem.dealer.Dealer;
 import com.nedogeek.holdem.gamingStuff.Player;
@@ -54,10 +55,10 @@ public class AdminServlet extends HttpServlet {
 
         players.add(new CallBot("1", dealer));
         players.add(new RiseBot("2", dealer));
-//        players.add(new FoldBot("3", dealer));
-//        players.add(new CallBot("4", dealer));
-//        players.add(new RiseBot("5", dealer));
-//        players.add(new FoldBot("6", dealer));
+        players.add(new FoldBot("3", dealer));
+        players.add(new CallBot("4", dealer));
+        players.add(new RiseBot("5", dealer));
+        players.add(new FoldBot("6", dealer));
     }
 
     @Override
