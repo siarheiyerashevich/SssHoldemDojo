@@ -1,9 +1,7 @@
 package com.nedogeek.holdem.server;
 
 import com.nedogeek.holdem.GameSettings;
-import com.nedogeek.holdem.bot.CallBot;
 import com.nedogeek.holdem.bot.FoldBot;
-import com.nedogeek.holdem.bot.RiseBot;
 import com.nedogeek.holdem.dealer.Dealer;
 import com.nedogeek.holdem.gamingStuff.Player;
 import com.nedogeek.holdem.gamingStuff.PlayersList;
@@ -21,12 +19,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * User: Konstantin Demishev
- * Date: 09.03.13
- * Time: 20:08
+ * User: Konstantin Demishev Date: 09.03.13 Time: 20:08
  */
 @WebServlet(urlPatterns = "/admin", loadOnStartup = 1)
 public class AdminServlet extends HttpServlet {
+
     private final String[] serverBots = new String[]{"CallBot", "FoldBot", "RandomBot", "RiseBot"};
 
     private final String DEFAULT_ADMIN_PASSWORD = "1234";
@@ -52,13 +49,10 @@ public class AdminServlet extends HttpServlet {
         players = new PlayersList();
 
         dealer = new Dealer(players);
-
-        players.add(new CallBot("1", dealer));
-        players.add(new RiseBot("2", dealer));
-        players.add(new FoldBot("3", dealer));
-        players.add(new CallBot("4", dealer));
-        players.add(new RiseBot("5", dealer));
-        players.add(new FoldBot("6", dealer));
+//
+//        players.add(new RandomBot(dealer));
+        players.add(new FoldBot("fold bot1", dealer));
+        players.add(new FoldBot("fold bot2", dealer));
     }
 
     @Override
@@ -68,13 +62,15 @@ public class AdminServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
+            throws ServletException, IOException {
         RequestDispatcher view = httpServletRequest.getRequestDispatcher("/admin/index.html");
         view.forward(httpServletRequest, httpServletResponse);
     }
 
     @Override
-    protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
+            throws ServletException, IOException {
         final String enteredPassword = httpServletRequest.getParameter("password");
         RequestDispatcher view;
         if (adminPassword.equals(enteredPassword)) {
@@ -171,7 +167,8 @@ public class AdminServlet extends HttpServlet {
 
     private void addBot(String addBotCommand, String botName) {
         try {
-            players.add((Player) Class.forName("com.nedogeek.holdem.bot." + addBotCommand).getConstructor(String.class, Dealer.class).newInstance(botName, dealer));
+            players.add((Player) Class.forName("com.nedogeek.holdem.bot." + addBotCommand)
+                    .getConstructor(String.class, Dealer.class).newInstance(botName, dealer));
         } catch (InstantiationException | NoSuchMethodException | ClassNotFoundException | InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
         }

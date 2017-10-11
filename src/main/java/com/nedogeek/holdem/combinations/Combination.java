@@ -5,9 +5,7 @@ import com.nedogeek.holdem.gamingStuff.CardValue;
 
 
 /**
- * User: Konstantin Demishev
- * Date: 02.12.12
- * Time: 22:56
+ * User: Konstantin Demishev Date: 02.12.12 Time: 22:56
  */
 enum Combination {
     ROYAL_FLASH("Royal flash", 5),
@@ -45,15 +43,7 @@ enum Combination {
     static String cardsCombination(Card[] cards) {
         Combination combination = getCombinationType(cards);
         Card[] combinationCards = defineCombinationCards(cards, combination);
-        return combination.generateMessage(combinationCards);
-    }
-
-    private String generateMessage(Card... cards) {
-        String[] cardNames = new String[cards.length];
-        for (int i = 0; i < cards.length; i++) {
-            cardNames[i] = cards[i].getCardValueName();
-        }
-        return String.format(combinationMessage, (Object[]) cardNames);
+        return combinationCards != null ? combination.generateMessage(combinationCards) : "";
     }
 
     private static void downSort(Card[] cards) {
@@ -109,13 +99,17 @@ enum Combination {
 
     private static boolean hasSmallerStraight(Card[] cards) {
         return (cards[0].getCardValue() == CardValue.ACE) &&
-                (cards[1].getCardValue() == CardValue.FIVE) &&
-                (cards[2].getCardValue() == CardValue.FOUR) &&
-                (cards[3].getCardValue() == CardValue.THREE) &&
-                (cards[4].getCardValue() == CardValue.TWO);
+               (cards[1].getCardValue() == CardValue.FIVE) &&
+               (cards[2].getCardValue() == CardValue.FOUR) &&
+               (cards[3].getCardValue() == CardValue.THREE) &&
+               (cards[4].getCardValue() == CardValue.TWO);
     }
 
     private static Card[] defineCombinationCards(Card[] cards, Combination combination) {
+        if (combination == null) {
+            return null;
+        }
+
         switch (combination) {
             case HIGH_CARD_TWO_CARDS:
                 return DefineHighCardTwoCardsCards(cards);
@@ -167,8 +161,8 @@ enum Combination {
 
     private static Card[] defineFourOfKindCards(Card[] cards) {
         return (sameCardValues(cards, 0, 1)) ?
-                new Card[]{cards[0], cards[4]} :
-                new Card[]{cards[4], cards[0]};
+               new Card[]{cards[0], cards[4]} :
+               new Card[]{cards[4], cards[0]};
     }
 
     private static Card[] defineStraightFlashCards(Card[] cards) {
@@ -181,7 +175,7 @@ enum Combination {
 
     private static Card[] defineFullHouseCards(Card[] cards) {
         return (sameCardValues(cards, 1, 2)) ? new Card[]{cards[0], cards[4]} :
-                new Card[]{cards[4], cards[0]};
+               new Card[]{cards[4], cards[0]};
     }
 
     private static Card[] defineSetCards(Card[] cards) {
@@ -224,7 +218,6 @@ enum Combination {
         return setCards;
     }
 
-
     private static Card[] definePairsCards(Card[] cards) {
         Card[] pairCards = new Card[4];
         for (int i = 0; i < cards.length - 1; i++) {
@@ -253,7 +246,7 @@ enum Combination {
 
     private static boolean hasFullHouse(Card[] cards) {
         return sameCardValues(cards, 0, 1) && sameCardValues(cards, 3, 4) &&
-                (sameCardValues(cards, 1, 2) || sameCardValues(cards, 2, 3));
+               (sameCardValues(cards, 1, 2) || sameCardValues(cards, 2, 3));
     }
 
     private static boolean hasSet(Card[] cards) {
@@ -271,8 +264,8 @@ enum Combination {
 
     private static boolean hasTwoPairs(Card[] cards) {
         return sameCardValues(cards, 0, 1) && sameCardValues(cards, 2, 3) ||
-                sameCardValues(cards, 1, 2) && sameCardValues(cards, 3, 4) ||
-                sameCardValues(cards, 0, 1) && sameCardValues(cards, 3, 4);
+               sameCardValues(cards, 1, 2) && sameCardValues(cards, 3, 4) ||
+               sameCardValues(cards, 0, 1) && sameCardValues(cards, 3, 4);
     }
 
     private static boolean hasStraight(Card[] cards) {
@@ -309,5 +302,13 @@ enum Combination {
     static Card[] getCombinationCards(Card[] cards) {
         Combination combination = getCombinationType(cards);
         return defineCombinationCards(cards, combination);
+    }
+
+    private String generateMessage(Card... cards) {
+        String[] cardNames = new String[cards.length];
+        for (int i = 0; i < cards.length; i++) {
+            cardNames[i] = cards[i].getCardValueName();
+        }
+        return String.format(combinationMessage, (Object[]) cardNames);
     }
 }

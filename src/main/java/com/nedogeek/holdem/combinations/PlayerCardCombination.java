@@ -5,11 +5,10 @@ import com.nedogeek.holdem.gamingStuff.Card;
 import java.util.Arrays;
 
 /**
- * User: Konstantin Demishev
- * Date: 27.11.12
- * Time: 14:23
+ * User: Konstantin Demishev Date: 27.11.12 Time: 14:23
  */
 public class PlayerCardCombination implements Comparable<PlayerCardCombination> {
+
     private final Card[] cards;
 
 
@@ -36,7 +35,7 @@ public class PlayerCardCombination implements Comparable<PlayerCardCombination> 
                 Card[] bestCombinationCards = Combination.getCombinationCards(bestCards);
 
                 if (compareCombinations(currentCombinationType, bestCombinationType,
-                        currentCombinationCards, bestCombinationCards) > 0) {
+                                        currentCombinationCards, bestCombinationCards) > 0) {
                     bestCards = currentCards;
                 }
             }
@@ -58,6 +57,11 @@ public class PlayerCardCombination implements Comparable<PlayerCardCombination> 
 
     @Override
     public String toString() {
+
+        if (cards == null) {
+            return "";
+        }
+
         return getCombination() + ": " + Arrays.asList(cards);
     }
 
@@ -72,7 +76,8 @@ public class PlayerCardCombination implements Comparable<PlayerCardCombination> 
                 firstCombinationType, secondCombinationType, firstCombinationCards, secondCombinationCards);
     }
 
-    private int compareCombinations(Combination firstCombinationType, Combination secondCombinationType, Card[] firstCombinationCards, Card[] secondCombinationCards) {
+    private int compareCombinations(Combination firstCombinationType, Combination secondCombinationType,
+                                    Card[] firstCombinationCards, Card[] secondCombinationCards) {
         if (firstCombinationType != secondCombinationType) {
             return -1 * firstCombinationType.compareTo(secondCombinationType);
         } else {
